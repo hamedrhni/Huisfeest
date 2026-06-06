@@ -341,7 +341,7 @@ export const nl = {
     sections: [
       {
         heading: "Wie zijn wij?",
-        body: "HuisFeest is een Nederlands bedrijf dat intieme privéfeesten verzorgt bij mensen thuis. TODO: vul KvK-nummer, adres en contactgegevens in voor publicatie.",
+        body: "HuisFeest is een Nederlands bedrijf (BV in oprichting) dat intieme privéfeesten en culinaire ervaringen verzorgt bij mensen thuis. Adres: Dokter Nevenstraat 1, 6224 DD Maastricht. KvK-nummer wordt gepubliceerd zodra de inschrijving is afgerond. Voor vragen kun je contact opnemen via info@huisfeest.nl.",
       },
       {
         heading: "Welke gegevens verzamelen we?",
@@ -361,7 +361,7 @@ export const nl = {
       },
       {
         heading: "Contact",
-        body: "Voor vragen over privacy of een verzoek tot inzage of verwijdering: TODO: vul contactgegevens in (e-mail, adres). We reageren binnen 30 dagen.",
+        body: "Voor vragen over privacy, een verzoek tot inzage, correctie of verwijdering van jouw gegevens, kun je contact opnemen via info@huisfeest.nl of schriftelijk via Dokter Nevenstraat 1, 6224 DD Maastricht. We reageren binnen 30 dagen.",
       },
     ],
   },
@@ -378,7 +378,7 @@ export const nl = {
     sections: [
       {
         heading: "Over HuisFeest",
-        body: "HuisFeest is een Nederlandse aanbieder van privéfeestdiensten, waaronder private chef, grazing en fruittafels, decoratie, muziek en coördinatie. TODO: vul KvK-nummer, adres en rechtsvorm in voor publicatie.",
+        body: "HuisFeest is een besloten vennootschap (BV in oprichting), gevestigd aan Dokter Nevenstraat 1, 6224 DD Maastricht. KvK-nummer wordt gepubliceerd zodra de inschrijving is afgerond. Voor vragen over deze voorwaarden: info@huisfeest.nl.",
       },
       {
         heading: "Aanvraag en offerte",
@@ -386,7 +386,7 @@ export const nl = {
       },
       {
         heading: "Annulering",
-        body: "Bij annulering meer dan 14 dagen voor de datum: geen kosten. Bij annulering 7–14 dagen van tevoren: 50% van de afgesproken prijs. Bij annulering minder dan 7 dagen van tevoren: 100% van de afgesproken prijs. TODO: pas aan op basis van werkelijke bedrijfspraktijk.",
+        body: "Annulering is kosteloos tot 7 dagen voor de geplande datum. Bij annulering binnen 7 dagen voor het event wordt 50% van het totaalbedrag in rekening gebracht. Bij annulering binnen 24 uur voor het event of bij niet-verschijnen wordt 100% van het totaalbedrag in rekening gebracht. Annulering dient schriftelijk te worden bevestigd via info@huisfeest.nl.",
       },
       {
         heading: "Aansprakelijkheid",
@@ -398,7 +398,7 @@ export const nl = {
       },
       {
         heading: "Contact",
-        body: "Vragen over deze voorwaarden? TODO: vul contactgegevens in (e-mail, adres).",
+        body: "Voor vragen over deze algemene voorwaarden of jouw boeking: info@huisfeest.nl of schriftelijk via Dokter Nevenstraat 1, 6224 DD Maastricht.",
       },
     ],
   },
@@ -420,7 +420,7 @@ export const nl = {
         name: "Intieme tafel",
         tagline: "Voor een klein, warm samenzijn",
         audience: "2–6 gasten",
-        range: "TODO: stel een richtprijs in voor dit arrangement (bijv. 'vanaf € 195').",
+        range: "vanaf € 195",
         includes: [
           "Diner of grazing voor een kleine groep",
           "Sfeervolle basisstyling",
@@ -433,7 +433,7 @@ export const nl = {
         name: "Feesttafel",
         tagline: "Overvloed die indruk maakt",
         audience: "6–14 gasten",
-        range: "TODO: stel een richtprijs in voor dit arrangement (bijv. 'vanaf € 395').",
+        range: "vanaf € 395",
         includes: [
           "Uitgebreide grazing- of fruittafel",
           "Styling met bloemen en linnen",
@@ -446,7 +446,7 @@ export const nl = {
         name: "Feestopstelling",
         tagline: "Eten, decoratie en sfeer als één geheel",
         audience: "10–25 gasten",
-        range: "TODO: stel een richtprijs in voor dit arrangement (bijv. 'vanaf € 695').",
+        range: "vanaf € 695",
         includes: [
           "Chef of uitgebreide tafel naar keuze",
           "Volledige styling & decoratie",
@@ -459,7 +459,7 @@ export const nl = {
         name: "Volledig gastheerschap",
         tagline: "Jij bent gast op je eigen feest",
         audience: "op maat",
-        range: "TODO: stel een richtprijs in voor dit arrangement (bijv. 'op aanvraag').",
+        range: "op aanvraag",
         includes: [
           "Private chef & service",
           "Complete styling, muziek en coördinatie",
@@ -480,7 +480,7 @@ export const nl = {
       },
       {
         q: "Is er een aanbetaling vereist?",
-        a: "TODO: vul het aanbetalingsbeleid in (bijv. '30% aanbetaling bij bevestiging, restant 7 dagen voor het event').",
+        a: "Bij bevestiging van jouw boeking vragen wij een aanbetaling van 30% van het totaalbedrag. Het resterende bedrag dient uiterlijk 7 dagen voor het event te worden voldaan. Betalingsinstructies ontvang je per e-mail na bevestiging.",
       },
       {
         q: "Zijn ingrediënten inbegrepen?",

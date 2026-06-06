@@ -341,7 +341,7 @@ export const en: Dictionary = {
     sections: [
       {
         heading: "Who are we?",
-        body: "HuisFeest is a Dutch company organising intimate private celebrations in people's homes. TODO: add KvK registration number, address and contact details before publication.",
+        body: "HuisFeest is a Dutch company (BV in formation) providing intimate private celebrations and culinary experiences at home. Address: Dokter Nevenstraat 1, 6224 DD Maastricht, the Netherlands. Chamber of Commerce (KvK) number will be published once registration is complete. For questions, contact us at info@huisfeest.nl.",
       },
       {
         heading: "What data do we collect?",
@@ -361,7 +361,7 @@ export const en: Dictionary = {
       },
       {
         heading: "Contact",
-        body: "For privacy questions or a request to access or delete data: TODO: add contact details (email, address). We respond within 30 days.",
+        body: "For privacy questions or to request access, correction, or deletion of your personal data, contact us at info@huisfeest.nl or in writing at Dokter Nevenstraat 1, 6224 DD Maastricht, the Netherlands. We will respond within 30 days.",
       },
     ],
   },
@@ -378,7 +378,7 @@ export const en: Dictionary = {
     sections: [
       {
         heading: "About HuisFeest",
-        body: "HuisFeest is a Dutch provider of private celebration services, including private chef, grazing and fruit tables, decoration, music and coordination. TODO: add KvK registration number, address and legal form before publication.",
+        body: "HuisFeest is a private limited company (BV in formation), registered at Dokter Nevenstraat 1, 6224 DD Maastricht, the Netherlands. Chamber of Commerce (KvK) number will be published once registration is complete. For questions about these terms: info@huisfeest.nl.",
       },
       {
         heading: "Inquiry and quote",
@@ -386,7 +386,7 @@ export const en: Dictionary = {
       },
       {
         heading: "Cancellation",
-        body: "Cancellation more than 14 days before the date: no charge. Cancellation 7–14 days before: 50% of the agreed price. Cancellation less than 7 days before: 100% of the agreed price. TODO: adjust to reflect actual business practice.",
+        body: "Cancellation is free of charge up to 7 days before the scheduled event. Cancellations made within 7 days of the event will be charged 50% of the total amount. Cancellations made within 24 hours of the event or no-shows will be charged 100% of the total amount. Cancellations must be confirmed in writing via info@huisfeest.nl.",
       },
       {
         heading: "Liability",
@@ -398,7 +398,7 @@ export const en: Dictionary = {
       },
       {
         heading: "Contact",
-        body: "Questions about these terms? TODO: add contact details (email, address).",
+        body: "For questions about these terms and conditions or your booking: info@huisfeest.nl or in writing at Dokter Nevenstraat 1, 6224 DD Maastricht, the Netherlands.",
       },
     ],
   },
@@ -420,7 +420,7 @@ export const en: Dictionary = {
         name: "Intimate table",
         tagline: "For a small, warm gathering",
         audience: "2–6 guests",
-        range: "TODO: set an indicative price range for this package (e.g. 'from € 195').",
+        range: "from € 195",
         includes: [
           "Dinner or grazing for a small group",
           "Atmospheric base styling",
@@ -433,7 +433,7 @@ export const en: Dictionary = {
         name: "Feast table",
         tagline: "Abundance that makes an impression",
         audience: "6–14 guests",
-        range: "TODO: set an indicative price range for this package (e.g. 'from € 395').",
+        range: "from € 395",
         includes: [
           "Generous grazing or fruit table",
           "Styling with flowers and linen",
@@ -446,7 +446,7 @@ export const en: Dictionary = {
         name: "Celebration setup",
         tagline: "Food, decoration and atmosphere as one",
         audience: "10–25 guests",
-        range: "TODO: set an indicative price range for this package (e.g. 'from € 695').",
+        range: "from € 695",
         includes: [
           "Chef or generous table of your choice",
           "Full styling & decoration",
@@ -459,7 +459,7 @@ export const en: Dictionary = {
         name: "Full hosting experience",
         tagline: "You're a guest at your own party",
         audience: "bespoke",
-        range: "TODO: set an indicative price range for this package (e.g. 'on request').",
+        range: "on request",
         includes: [
           "Private chef & service",
           "Complete styling, music and coordination",
@@ -480,7 +480,7 @@ export const en: Dictionary = {
       },
       {
         q: "Is a deposit required?",
-        a: "TODO: fill in the deposit policy (e.g. '30% deposit on confirmation, balance due 7 days before the event').",
+        a: "A 30% deposit of the total amount is required upon booking confirmation. The remaining balance is due no later than 7 days before your event. Payment instructions will be sent by email after confirmation.",
       },
       {
         q: "Are ingredients included?",
