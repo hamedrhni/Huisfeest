@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --header-h: 4.5rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchored sections so the fixed header doesn't cover headings. */
+    scroll-padding-top: var(--header-h);
+  }
+
+  body {
+    @apply bg-cream text-charcoal font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    @apply bg-olive text-cream;
+  }
+
+  /* Respect users who prefer reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-editorial {
+    @apply mx-auto w-full max-w-7xl px-6 md:px-10;
+  }
+
+  .kicker {
+    @apply text-xs uppercase tracking-kicker text-olive font-medium;
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors duration-300 ease-editorial focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-olive focus-visible:ring-offset-cream;
+  }
+
+  .btn-primary {
+    @apply bg-olive text-cream hover:bg-olive-dark;
+  }
+
+  .btn-secondary {
+    @apply border border-charcoal/20 text-charcoal hover:border-charcoal/40 hover:bg-charcoal/5;
+  }
+
+  .btn-ghost {
+    @apply text-charcoal hover:bg-charcoal/5;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-charcoal-soft;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl border border-warmgray bg-cream-50 px-4 py-3 text-charcoal placeholder:text-charcoal-muted/60 transition focus:border-olive focus:outline-none focus:ring-2 focus:ring-olive/30;
+  }
+}

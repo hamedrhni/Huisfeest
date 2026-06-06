@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Mirrors lib/storage/types.ts Lead interface exactly.
+// All timestamps stored as ISO 8601 strings so the TypeScript interface
+// requires no conversion. For high-volume use, switch createdAt/updatedAt
+// to DateTime and add proper DB indexes.
+model Lead {
+  id              String  @id
+  createdAt       String
+  updatedAt       String
+  status          String  @default("new")
+  source          String  @default("website")
+  language        String  @default("nl")
+  adminNotes      String  @default("")
+  fullName        String
+  email           String
+  phone           String
+  whatsapp        Boolean @default(false)
+  eventType       String
+  packageInterest String  @default("")
+  guestCount      String  @default("")
+  eventDate       String  @default("")
+  city            String  @default("")
+  postcode        String  @default("")
+  dietaryNotes    String  @default("")
+  themePreference String  @default("")
+  message         String  @default("")
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("leads")
+}
