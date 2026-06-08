@@ -167,7 +167,6 @@ export const nl = {
     kicker: "sfeer",
     title: "Een indruk van wat we maken",
     intro: "Beelden zeggen meer dan een menukaart. Dit is de sfeer waar we naar streven.",
-    placeholderNote: "Voorbeeldsfeer — echte HuisFeest-fotografie volgt vóór de lancering.",
     tiles: [
       { label: "Kaarslicht & couvert" },
       { label: "Grazing in detail" },

@@ -167,7 +167,6 @@ export const en: Dictionary = {
     kicker: "atmosphere",
     title: "A glimpse of what we create",
     intro: "Images say more than a menu. This is the atmosphere we aim for.",
-    placeholderNote: "Sample atmosphere — real HuisFeest photography will follow before launch.",
     tiles: [
       { label: "Candlelight & place setting" },
       { label: "Grazing in detail" },

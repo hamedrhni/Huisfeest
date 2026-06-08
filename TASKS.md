@@ -121,14 +121,14 @@ The detailed execution for the **current** phase belongs in `IMPLEMENTATION_PLAN
 - [x] secure admin routes (requireAdmin + signed cookie)
 ---
 
-## Phase 4 (this phase) — Pre-launch hardening
+## Phase 4 (this phase) ï¿½ Pre-launch hardening
 
 ### Goals
 - add content check tooling, pricing page, maintenance mode, and QA checklist
 
 ### Tasks
-- [x] add check-content script (scripts/check-content.ts — exits 1 if TODO: remain)
-- [x] add pricing page (/prijzen + /en/prijzen — TODO: fill price ranges)
+- [x] add check-content script (scripts/check-content.ts ï¿½ exits 1 if TODO: remain)
+- [x] add pricing page (/prijzen + /en/prijzen ï¿½ TODO: fill price ranges)
 - [x] add maintenance mode / soft-launch (MAINTENANCE_MODE env flag, coming soon page)
 - [x] add manual QA checklist (scripts/qa-checklist.md)
 
@@ -148,7 +148,7 @@ The detailed execution for the **current** phase belongs in `IMPLEMENTATION_PLAN
 - [ ] add trust signals and service-area details
 - [ ] replace placeholder testimonials when available
 - [ ] add real gallery assets when available
-- [x] add pricing page (/prijzen + /en/prijzen — TODO: fill price ranges)
+- [x] add pricing page (/prijzen + /en/prijzen ï¿½ TODO: fill price ranges)
 - [x] add GDPR cookie consent banner (bottom bar, locale-aware, 365-day cookie)
 
 ---

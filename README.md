@@ -204,14 +204,20 @@ Business logic depends only on the `LeadStore` interface (`lib/storage/leadStore
 
 ---
 
-## Cinematic hero & replacing placeholder media
+## Cinematic hero — chapter photos
 
-The hero (`components/marketing/CinematicHero.tsx`) renders a **procedural canvas scene** by default — no media files needed. Swap to real footage when ready:
+The hero uses **one photo per scroll chapter** (4 images). As visitors scroll, the background crossfades in sync with the chapter text.
 
-1. Export clip to numbered frames, e.g. `frame_0001.jpg … frame_0120.jpg`.
-2. Place frames in `public/hero/`.
-3. In `CinematicHero.tsx`, set `const FRAME_COUNT = 120;`.
-4. That's it — chapter text, loading UI, and reduced-motion fallback all keep working.
+Place your files in `public/hero/`:
+
+| File | Chapter |
+|---|---|
+| `chapter-01.jpg` | 01 · arrival |
+| `chapter-02.jpg` | 02 · table |
+| `chapter-03.jpg` | 03 · gathering |
+| `chapter-04.jpg` | 04 · hosting |
+
+Paths are defined in `lib/hero-images.ts`. Use landscape JPEGs (~1920×1080). No video frame sequence needed.
 
 ---
 
@@ -253,8 +259,8 @@ Replace these before / at launch:
 | WhatsApp number (+31 6 00000000) | `NEXT_PUBLIC_WHATSAPP_NUMBER` in Coolify |
 | Domain / base URL | `NEXT_PUBLIC_BASE_URL` in Coolify |
 | Logo (SVG wordmark) | `components/marketing/Logo.tsx` |
-| Hero footage | `public/hero/` + `FRAME_COUNT` (see above) |
-| Gallery images | `public/gallery/` + update `Gallery.tsx` |
+| Hero chapter photos | `public/hero/chapter-01.jpg` … `chapter-04.jpg` (see above) |
+| Gallery images | `public/gallery/Kaarslicht-01.jpg` … `dechef-06.jpg` (`lib/gallery-images.ts`) |
 | Testimonials | `content/nl.ts` + `content/en.ts` → `testimonials.items`, then set `SHOW_TESTIMONIALS=true` |
 | Contact email (shown on site) | `NEXT_PUBLIC_CONTACT_EMAIL` in Coolify |
 | Admin notification inbox | `ADMIN_EMAIL` in Coolify |
