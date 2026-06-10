@@ -1,28 +1,25 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/content";
 import { HERO_CHAPTER_IMAGES } from "@/lib/hero-images";
 import { cn } from "@/lib/utils";
 
-/** Visible viewport height — accounts for mobile browser chrome (address bar). */
-function getViewportHeight(): number {
-  return window.visualViewport?.height ?? window.innerHeight;
-}
-
 /**
  * Cinematic scroll hero — one photo per chapter (4 images in public/hero/).
  * Background crossfades in sync with chapter text as the visitor scrolls.
  *
- * Mobile: uses visualViewport + touch listeners + intersection markers because
- * iOS Safari often fails to update scroll progress with sticky + overflow-hidden.
+ * Mobile fixes:
+ * - Uses `vh` (universal) instead of `dvh` (limited support)
+ * - Uses native <img> with object-fit instead of Next Image `fill` (avoids
+ *   parent-height issues in sticky contexts on mobile Safari)
+ * - Explicit inline height on the scroll-track section
+ * - Touch + scroll listeners for iOS
  */
 export function CinematicHero({ dict }: { dict: Dictionary }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const markerRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [progress, setProgress] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   const chapters = dict.hero.chapters;
@@ -33,10 +30,10 @@ export function CinematicHero({ dict }: { dict: Dictionary }) {
     const section = sectionRef.current;
     if (!section) return;
 
-    const scrollY = window.scrollY || document.documentElement.scrollTop;
-    const viewportH = getViewportHeight();
-    const start = section.offsetTop;
-    const scrollable = section.offsetHeight - viewportH;
+    const rect = section.getBoundingClientRect();
+    const sectionH = section.offsetHeight;
+    const viewH = window.innerHeight;
+    const scrollable = sectionH - viewH;
 
     if (scrollable <= 0) {
       setProgress(0);
@@ -44,12 +41,9 @@ export function CinematicHero({ dict }: { dict: Dictionary }) {
       return;
     }
 
-    const p = Math.min(1, Math.max(0, (scrollY - start) / scrollable));
+    const p = Math.min(1, Math.max(0, -rect.top / scrollable));
     setProgress(p);
-
-    // Map progress to chapter: each chapter owns an equal scroll band.
-    const index = Math.min(chapterCount - 1, Math.floor(p * chapterCount));
-    setActiveIndex(index);
+    setActiveIndex(Math.min(chapterCount - 1, Math.floor(p * chapterCount)));
   }, [chapterCount]);
 
   useEffect(() => {
@@ -64,7 +58,7 @@ export function CinematicHero({ dict }: { dict: Dictionary }) {
     if (reducedMotion) return;
 
     let raf = 0;
-    const scheduleUpdate = () => {
+    const tick = () => {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         raf = 0;
@@ -72,84 +66,40 @@ export function CinematicHero({ dict }: { dict: Dictionary }) {
       });
     };
 
-    // Scroll + touch: iOS often needs touchmove for live updates during finger scroll.
-    window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("touchmove", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate, { passive: true });
-    window.addEventListener("orientationchange", scheduleUpdate);
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("touchmove", tick, { passive: true });
+    window.addEventListener("resize", tick, { passive: true });
 
-    const vv = window.visualViewport;
-    vv?.addEventListener("scroll", scheduleUpdate);
-    vv?.addEventListener("resize", scheduleUpdate);
-
-    scheduleUpdate();
+    tick();
 
     return () => {
-      window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("touchmove", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
-      window.removeEventListener("orientationchange", scheduleUpdate);
-      vv?.removeEventListener("scroll", scheduleUpdate);
-      vv?.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("scroll", tick);
+      window.removeEventListener("touchmove", tick);
+      window.removeEventListener("resize", tick);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [reducedMotion, updateFromScroll]);
 
-  // IntersectionObserver backup — reliable on mobile when scroll math is flaky.
-  useEffect(() => {
-    if (reducedMotion) return;
-
-    const markers = markerRefs.current.filter(Boolean) as HTMLDivElement[];
-    if (markers.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort(
-            (a, b) =>
-              Number(b.target.getAttribute("data-chapter")) -
-              Number(a.target.getAttribute("data-chapter")),
-          );
-
-        if (visible.length > 0) {
-          const idx = Number(visible[0].target.getAttribute("data-chapter"));
-          if (!Number.isNaN(idx)) {
-            setActiveIndex(idx);
-            setProgress((idx + 0.5) / chapterCount);
-          }
-        }
-      },
-      {
-        // Fire when a chapter marker crosses the middle of the screen.
-        root: null,
-        rootMargin: "-42% 0px -42% 0px",
-        threshold: 0,
-      },
-    );
-
-    markers.forEach((m) => observer.observe(m));
-    return () => observer.disconnect();
-  }, [reducedMotion, chapterCount]);
-
-  // ---- Reduced-motion: static hero with first chapter image ----------------
+  // ---- Reduced motion: static hero with all chapter text visible ----------
   if (reducedMotion) {
     return (
-      <section className="relative flex min-h-[100dvh] min-h-screen items-center overflow-hidden bg-charcoal">
-        <Image
+      <section className="relative flex min-h-screen items-center overflow-hidden bg-charcoal">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={chapterImages[0]}
           alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
           aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/30 to-charcoal/40" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/30 to-charcoal/40" />
         <div className="container-editorial relative z-10 py-32 text-cream">
           <p className="kicker text-champagne">{chapters[0].kicker}</p>
-          <h1 className="mt-4 max-w-3xl text-3xl leading-tight sm:text-4xl md:text-6xl">{chapters[0].title}</h1>
-          <p className="mt-6 max-w-xl text-base text-cream/80 sm:text-lg">{chapters[0].body}</p>
+          <h1 className="mt-4 max-w-3xl text-3xl leading-tight sm:text-4xl md:text-6xl">
+            {chapters[0].title}
+          </h1>
+          <p className="mt-6 max-w-xl text-base text-cream/80 sm:text-lg">
+            {chapters[0].body}
+          </p>
           <ul className="mt-10 max-w-xl space-y-3 border-l border-champagne/40 pl-5">
             {chapters.slice(1).map((c) => (
               <li key={c.kicker} className="text-cream/75">
@@ -160,7 +110,10 @@ export function CinematicHero({ dict }: { dict: Dictionary }) {
               </li>
             ))}
           </ul>
-          <a href="#services" className="btn-primary mt-10 bg-champagne text-charcoal hover:bg-champagne-soft">
+          <a
+            href="#services"
+            className="btn-primary mt-10 bg-champagne text-charcoal hover:bg-champagne-soft"
+          >
             {dict.hero.enter}
           </a>
         </div>
@@ -168,105 +121,93 @@ export function CinematicHero({ dict }: { dict: Dictionary }) {
     );
   }
 
-  // Scroll track: one viewport height per chapter. 100dvh tracks mobile chrome.
-  const scrollTrackHeight = `${chapterCount * 100}dvh`;
-
+  // ---- Scroll hero: sticky panel with crossfading chapter backgrounds ------
   return (
     <section
       ref={sectionRef}
       className="relative bg-charcoal"
-      style={{ height: scrollTrackHeight }}
+      // 400vh via inline style — guaranteed to work on every browser.
+      style={{ height: `${chapterCount * 100}vh` }}
     >
-      {/* Invisible markers — one per chapter band for IntersectionObserver */}
-      {chapters.map((_, i) => (
-        <div
-          key={i}
-          ref={(el) => {
-            markerRefs.current[i] = el;
-          }}
-          data-chapter={i}
-          aria-hidden="true"
-          className="pointer-events-none absolute left-0 w-full"
-          style={{
-            top: `calc(${i} * 100dvh + 50dvh)`,
-            height: "1px",
-          }}
-        />
-      ))}
+      <div
+        className="sticky top-0 w-full"
+        style={{ height: "100vh" }}
+      >
+        {/* Background images — all stacked, opacity toggled */}
+        {chapterImages.map((src, i) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={src}
+            src={src}
+            alt=""
+            aria-hidden="true"
+            // Inline styles to guarantee full-cover on every mobile browser.
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: i === activeIndex ? 1 : 0,
+              transition: "opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          />
+        ))}
 
-      {/*
-        Sticky panel: NO overflow-hidden here — that breaks position:sticky on iOS.
-        Clipping is handled on the inner image layer instead.
-      */}
-      <div className="sticky top-0 h-[100dvh] min-h-screen w-full">
-        <div className="relative h-full w-full">
-          {/* Image layer */}
-          <div className="absolute inset-0 overflow-hidden">
-            {chapterImages.map((src, i) => (
-              <Image
-                key={src}
-                src={src}
-                alt=""
-                fill
-                priority={i === 0}
-                sizes="100vw"
-                aria-hidden="true"
+        {/* Readability scrim */}
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/10 to-charcoal/30"
+          aria-hidden="true"
+        />
+
+        {/* Chapter text overlays */}
+        <div className="container-editorial relative z-10 flex items-center" style={{ height: "100vh" }}>
+          <div className="w-full max-w-3xl">
+            {chapters.map((chapter, i) => (
+              <div
+                key={chapter.kicker}
+                aria-hidden={i !== activeIndex}
+                style={{
+                  position: i === activeIndex ? "relative" : "absolute",
+                  top: i === activeIndex ? undefined : 0,
+                  left: i === activeIndex ? undefined : 0,
+                  opacity: i === activeIndex ? 1 : 0,
+                  pointerEvents: i === activeIndex ? "auto" : "none",
+                  transition: "opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              >
+                <p className="kicker text-champagne">{chapter.kicker}</p>
+                <h1 className="mt-3 text-3xl leading-tight sm:mt-4 sm:text-4xl md:text-6xl text-cream">
+                  {chapter.title}
+                </h1>
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-cream/85 sm:mt-6 sm:text-lg">
+                  {chapter.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Chapter progress dots + scroll hint */}
+        <div
+          className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-3 sm:bottom-8"
+          style={{ opacity: progress < 0.92 ? 1 : 0, transition: "opacity 0.5s" }}
+        >
+          <div className="flex items-center gap-2" aria-hidden="true">
+            {chapters.map((_, i) => (
+              <span
+                key={i}
                 className={cn(
-                  "object-cover transition-opacity duration-700 ease-editorial",
-                  i === activeIndex ? "opacity-100" : "opacity-0",
+                  "h-1.5 rounded-full transition-all duration-500",
+                  i === activeIndex ? "w-6 bg-champagne" : "w-1.5 bg-cream/40",
                 )}
               />
             ))}
-            <div
-              className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/10 to-charcoal/30"
-              aria-hidden="true"
-            />
           </div>
-
-          {/* Chapter text */}
-          <div className="container-editorial relative z-10 flex h-full items-center text-cream">
-            <div className="relative min-h-[45dvh] w-full max-w-3xl py-20 sm:min-h-[50dvh] sm:py-24">
-              {chapters.map((chapter, i) => (
-                <div
-                  key={chapter.kicker}
-                  aria-hidden={i !== activeIndex}
-                  className={cn(
-                    "absolute inset-0 flex flex-col justify-center transition-opacity duration-700 ease-editorial",
-                    i === activeIndex ? "z-10 opacity-100" : "pointer-events-none opacity-0",
-                  )}
-                >
-                  <p className="kicker text-champagne">{chapter.kicker}</p>
-                  <h1 className="mt-3 text-3xl leading-tight sm:mt-4 sm:text-4xl md:text-6xl">
-                    {chapter.title}
-                  </h1>
-                  <p className="mt-4 max-w-xl text-base leading-relaxed text-cream/85 sm:mt-6 sm:text-lg">
-                    {chapter.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Scroll hint + chapter dots (helps mobile discoverability) */}
-          <div
-            className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-4 sm:bottom-8"
-            style={{ opacity: progress < 0.92 ? 1 : 0, transition: "opacity 0.5s" }}
-          >
-            <div className="flex items-center gap-2" aria-hidden="true">
-              {chapters.map((_, i) => (
-                <span
-                  key={i}
-                  className={cn(
-                    "h-1.5 rounded-full transition-all duration-500",
-                    i === activeIndex ? "w-6 bg-champagne" : "w-1.5 bg-cream/40",
-                  )}
-                />
-              ))}
-            </div>
-            <span className="text-xs uppercase tracking-kicker text-cream/70">
-              {dict.hero.scrollHint}
-            </span>
-          </div>
+          <span className="text-xs uppercase tracking-kicker text-cream/70">
+            {dict.hero.scrollHint}
+          </span>
         </div>
       </div>
     </section>
